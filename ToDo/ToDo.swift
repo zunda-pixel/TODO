@@ -13,11 +13,12 @@ class ToDo: NSObject, NSSecureCoding {
 
     var name: String?
     var addDate: Date?
-    var isDone: Bool = false
+    var isDone: Bool?
     
-    init (name: String, addDate: Date) {
+    init (name: String, addDate: Date, isDone: Bool) {
         self.name = name
         self.addDate = addDate
+        self.isDone = isDone
     }
 
     // load
@@ -25,13 +26,13 @@ class ToDo: NSObject, NSSecureCoding {
         super.init()
         if let name = coder.decodeObject(forKey: "name") as? String {
             self.name = name
-        }
-        if let addDate = coder.decodeObject(forKey: "addDate") as? Date{
+        } else { print("nameが見つかりません") }
+        if let addDate = coder.decodeObject(forKey: "addDate") as? Date {
             self.addDate = addDate
-        }
+        } else { print("addDateが見つかりません") }
         if let isDone = coder.decodeObject(forKey: "isDone") as? Bool {
             self.isDone = isDone
-        }
+        } else { print("isDoneが見つかりません") }
     }
 
     // save
@@ -41,5 +42,4 @@ class ToDo: NSObject, NSSecureCoding {
         coder.encode(self.isDone, forKey: "isDone")
     }
 }
-
 
