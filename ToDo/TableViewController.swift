@@ -48,6 +48,10 @@ class TableViewController: UITableViewController {
         self.tableView.reloadData()
     }
     
+    @IBAction func tapEditButton(_ sender: Any) {
+        tableView.isEditing = tableView.isEditing ? false : true
+    }
+    
     @IBAction func cellDetailTap(_ sender: NSCoder) {
         if let detailViewController = storyboard?.instantiateViewController(identifier: "todoDetail") as? ToDoDetailViewController {
             detailViewController.name = "hello" // 値渡し
@@ -89,32 +93,37 @@ class TableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.todoList.count
+        switch section {
+        case 0:
+            return self.todoList.count
+        default:
+            return 0
+        }
     }
     
     //セル自体を設定
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "todoCell") as? ToDoTableViewCell else {
-            return ToDoTableViewCell()
-        }
-        
-        cell.nameLabel.text = self.todoList[indexPath.row].name
-        cell.nameLabel.sizeToFit()
-        
-        guard let isDone = self.todoList[indexPath.row].isDone else {
-            return ToDoTableViewCell()
-        }
-        
-        if isDone {
-            cell.accessoryType = UITableViewCell.AccessoryType.checkmark
-            if let text = cell.nameLabel.text {
-                cell.nameLabel.text = "\u{2713} " + text
+        switch indexPath.section {
+            case 0:
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: "todoCell") as? ToDoTableViewCell else {
+                    return ToDoTableViewCell()
+                }
+                
+                cell.nameLabel.text = self.todoList[indexPath.row].name
                 cell.nameLabel.sizeToFit()
-            }
+                
+                guard let isDone = self.todoList[indexPath.row].isDone else {
+                    return ToDoTableViewCell()
+                }
+                
+                if isDone {
+                    cell.accessoryType = UITableViewCell.AccessoryType.checkmark
+                }
+                
+                return cell
+            default:
+                return ToDoTableViewCell()
         }
-        
-        return cell
     }
     
     //セルを選択された際のアクション
@@ -124,22 +133,11 @@ class TableViewController: UITableViewController {
         // チェックマークを入れる
         guard let isDone = self.todoList[indexPath.row].isDone else { return }
         cell?.accessoryType = isDone ? UITableViewCell.AccessoryType.none : UITableViewCell.AccessoryType.checkmark
-        guard let text = cell?.nameLabel.text else { return }
-        if isDone {
-            let zero = text.startIndex
-            let start = text.index(zero, offsetBy: 2)
-            let end = text.index(zero, offsetBy: text.count-1)
-            
-            cell?.nameLabel.text = String(text[start...end])
-        } else {
-            cell?.nameLabel.text = "\u{2713} " + text
-            cell?.nameLabel.sizeToFit()
-        }
         self.todoList[indexPath.row].isDone = isDone ? false : true
-        
         self.saveToDoData(self.todoList)
     }
     
+    // セルのスワイプアクションを設定
     override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         // セルの削除
         let deleteAction = UIContextualAction(style: UIContextualAction.Style.destructive, title: "Delete") { (action, view, completionHandler) in
@@ -168,5 +166,29 @@ class TableViewController: UITableViewController {
             self.present(alertController, animated: true, completion: nil)
         }
         return UISwipeActionsConfiguration(actions: [deleteAction, editAction])
+    }
+    
+    // 編集モードの設定
+    override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        let paths = self.todoList[sourceIndexPath.row]
+        self.todoList.remove(at: sourceIndexPath.row)
+        self.todoList.insert(paths, at: destinationIndexPath.row)
+        self.saveToDoData(self.todoList)
+    }
+    
+    // tableViewのセクション数を設定
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    
+    //tableViewのタイトルを設定
+    override func tableView(_ tableView: UITableView,
+                       titleForHeaderInSection section: Int) -> String? {
+        switch section {
+            case 0:
+                return "ToDo(未完了)"
+            default:
+                return "ToDo(完了済み)"
+        }
     }
 }
