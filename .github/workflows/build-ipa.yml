@@ -2,7 +2,7 @@ name: Swift
 
 on:
   release:
-    branches: [ main] 
+    branches: [ main ] 
 
 jobs:
   build:
