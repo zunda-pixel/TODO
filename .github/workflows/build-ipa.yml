@@ -1,0 +1,22 @@
+name: Swift
+
+on:
+  release:
+    branches: [ main] 
+
+jobs:
+  build:
+
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Select Xcode version
+      run: sudo xcode-select -s '/Applications/Xcode_12.4.app/Contents/Developer'
+    - name: Run tests
+      run: swift test -v
+    - name: build archive
+      run: sudo xcodebuild -project ToDo.xcodeproj -scheme MyApp -archivePath ./ToDo.xcarchive archive
+    - name: build ipa
+      run: sudo xcodebuild -exportArchive -archivePath ./ToDo.xcarchive -exportPath ./ -exportOptionsPlist exportOption.plist
+
