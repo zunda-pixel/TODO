@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2E4430082622D8F90065B6C1 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E4430072622D8F90065B6C1 /* SettingViewController.swift */; };
 		2ED07E732614B1420050AF3C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ED07E722614B1420050AF3C /* AppDelegate.swift */; };
 		2ED07E752614B1420050AF3C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ED07E742614B1420050AF3C /* SceneDelegate.swift */; };
 		2ED07E7A2614B1420050AF3C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2ED07E782614B1420050AF3C /* Main.storyboard */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2E4430072622D8F90065B6C1 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		2ED07E6F2614B1420050AF3C /* ToDo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2ED07E722614B1420050AF3C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2ED07E742614B1420050AF3C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -63,6 +65,7 @@
 				2ED07E722614B1420050AF3C /* AppDelegate.swift */,
 				2ED07E742614B1420050AF3C /* SceneDelegate.swift */,
 				2ED07E782614B1420050AF3C /* Main.storyboard */,
+				2E4430072622D8F90065B6C1 /* SettingViewController.swift */,
 				2ED07E872614B5D80050AF3C /* ToDo.swift */,
 				2EE9C0B1261CB1F6006433C4 /* ToDoDetailViewController.swift */,
 				2ED07E8B2614B6E50050AF3C /* TableViewController.swift */,
@@ -148,6 +151,7 @@
 				2ED07E882614B5D80050AF3C /* ToDo.swift in Sources */,
 				2EE9C0B2261CB1F6006433C4 /* ToDoDetailViewController.swift in Sources */,
 				2ED07E8C2614B6E50050AF3C /* TableViewController.swift in Sources */,
+				2E4430082622D8F90065B6C1 /* SettingViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -25,7 +25,7 @@ class ToDoTableViewCell : UITableViewCell {
 class TableViewController: UITableViewController {
     
     var todoList = [ToDo]()
-    
+
     @IBAction func tapAddToDoButton(_ sender: Any) {
         let alertController = UIAlertController(title: "ToDo追加", message: "なんのToDoを追加しますか？", preferredStyle: UIAlertController.Style.alert)
         let addToDoAction = UIAlertAction(title: "追加", style: UIAlertAction.Style.default, handler: {(action:UIAlertAction!) -> Void in
@@ -40,16 +40,16 @@ class TableViewController: UITableViewController {
         
         alertController.addAction(addToDoAction)
         alertController.addAction(cancelAction)
-        
-        alertController.addTextField(configurationHandler: {(text: UITextField!) -> Void in
-        })
+        alertController.addTextField(configurationHandler: {(text: UITextField!) -> Void in})
         
         present(alertController, animated: true, completion: nil)
         self.tableView.reloadData()
     }
     
-    @IBAction func tapEditButton(_ sender: Any) {
-        tableView.isEditing = tableView.isEditing ? false : true
+    @IBAction func tapSettingButton(_ sender: Any) {
+        if let settingViewController = storyboard?.instantiateViewController(identifier: "setting") as? SettingViewController {
+            present(settingViewController, animated: true, completion: nil) // 画面遷移
+        }
     }
     
     @IBAction func cellDetailTap(_ sender: NSCoder) {
@@ -93,37 +93,27 @@ class TableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch section {
-        case 0:
-            return self.todoList.count
-        default:
-            return 0
-        }
+        return self.todoList.count
     }
     
     //セル自体を設定
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        switch indexPath.section {
-            case 0:
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: "todoCell") as? ToDoTableViewCell else {
-                    return ToDoTableViewCell()
-                }
-                
-                cell.nameLabel.text = self.todoList[indexPath.row].name
-                cell.nameLabel.sizeToFit()
-                
-                guard let isDone = self.todoList[indexPath.row].isDone else {
-                    return ToDoTableViewCell()
-                }
-                
-                if isDone {
-                    cell.accessoryType = UITableViewCell.AccessoryType.checkmark
-                }
-                
-                return cell
-            default:
-                return ToDoTableViewCell()
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "todoCell") as? ToDoTableViewCell else {
+            return ToDoTableViewCell()
         }
+        
+        cell.nameLabel.text = self.todoList[indexPath.row].name
+        cell.nameLabel.sizeToFit()
+        
+        guard let isDone = self.todoList[indexPath.row].isDone else {
+            return ToDoTableViewCell()
+        }
+        
+        if isDone {
+            cell.accessoryType = UITableViewCell.AccessoryType.checkmark
+        }
+        
+        return cell
     }
     
     //セルを選択された際のアクション
@@ -168,7 +158,7 @@ class TableViewController: UITableViewController {
         return UISwipeActionsConfiguration(actions: [deleteAction, editAction])
     }
     
-    // 編集モードの設定
+    // セルの入れ替え挙動設定
     override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         let paths = self.todoList[sourceIndexPath.row]
         self.todoList.remove(at: sourceIndexPath.row)
@@ -178,17 +168,11 @@ class TableViewController: UITableViewController {
     
     // tableViewのセクション数を設定
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 1
     }
     
     //tableViewのタイトルを設定
-    override func tableView(_ tableView: UITableView,
-                       titleForHeaderInSection section: Int) -> String? {
-        switch section {
-            case 0:
-                return "ToDo(未完了)"
-            default:
-                return "ToDo(完了済み)"
-        }
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return "ToDo"
     }
 }
