@@ -51,9 +51,9 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="l2D-so-1Xy">
-                        <barButtonItem key="leftBarButtonItem" systemItem="edit" id="w0U-SY-CRe">
+                        <barButtonItem key="leftBarButtonItem" title="⚙" id="w0U-SY-CRe">
                             <connections>
-                                <action selector="tapEditButton:" destination="LVN-YP-hDX" id="6Xi-Nk-F9d"/>
+                                <action selector="tapSettingButton:" destination="LVN-YP-hDX" id="2Cx-nW-s61"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="D1b-Ea-qRe">
@@ -127,6 +127,31 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="e9o-oe-r93" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="718.84057971014499" y="122.54464285714285"/>
+        </scene>
+        <!--Setting View Controller-->
+        <scene sceneID="uCS-tG-mbJ">
+            <objects>
+                <viewController storyboardIdentifier="setting" id="iQy-Mx-QaB" customClass="SettingViewController" customModule="ToDo" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="bFh-oY-h7F">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xF2-5s-lpK">
+                                <rect key="frame" x="145" y="310" width="124" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="LogIn with Google"/>
+                                <connections>
+                                    <action selector="tapButtonLoginWithGoogle:" destination="iQy-Mx-QaB" eventType="touchUpInside" id="CpL-Ht-hNl"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="IZI-C2-Mn4"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Rcj-Hz-P5n" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1629" y="-562"/>
         </scene>
     </scenes>
     <resources>
