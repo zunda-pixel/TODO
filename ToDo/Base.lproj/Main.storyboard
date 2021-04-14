@@ -51,6 +51,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="l2D-so-1Xy">
+                        <barButtonItem key="leftBarButtonItem" systemItem="edit" id="w0U-SY-CRe">
+                            <connections>
+                                <action selector="tapEditButton:" destination="LVN-YP-hDX" id="6Xi-Nk-F9d"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="D1b-Ea-qRe">
                             <connections>
                                 <action selector="tapAddToDoButton:" destination="LVN-YP-hDX" id="xsf-I7-w3h"/>
