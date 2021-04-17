@@ -9,29 +9,44 @@ import UIKit
 
 class ToDoDetailViewController: UIViewController {
     
-    @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var addDateLabel: UILabel!
-    @IBOutlet weak var isDoneLabel: UILabel!
+    @IBOutlet weak var isDoneSwitch: UISwitch!
+    @IBOutlet weak var textField: UITextField!
+    @IBOutlet weak var datePicker: UIDatePicker!
     
-    var name: String?
-    var addDate: Date?
-    var isDone: Bool?
+    var resultHandler: (([ToDo]) -> Void)?
+    var indexPath  = IndexPath()
+    var todoList =  [ToDo]()
+    
+    @IBAction func tapAddButton(_ sender: Any) {
+        todoList[indexPath.row].isDone = isDoneSwitch.isOn
+        todoList[indexPath.row].name = textField.text
+        todoList[indexPath.row].addDate = datePicker.date
+        
+        
+        if let handler = self.resultHandler {
+            // 入力値を引数として渡された処理の実行
+            handler(todoList)
+        }
+        print(todoList.count)
+        // 遷移元へ戻る
+        //self.dismiss(animated: true, completion: nil)
+        //self.navigationController?.popViewController(animated: true)
+        self.dismiss(animated: true, completion: nil)
+    }
     
     override func viewDidLoad() {
-        super.viewDidLoad()
-        if let name = self.name {
-            nameLabel.text = name
-        }
-        if let addDate = self.addDate {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = DateFormatter.dateFormat(fromTemplate: "yyyy/MM/DD", options: 0, locale: Locale(identifier: "ja_JP"))
-            
-            addDateLabel.text = dateFormatter.string(from: addDate)
-        }
-        if let isDone = self.isDone {
-            self.isDoneLabel.text = isDone ? "完了済み" : "未完了"
-        }
         // Do any additional setup after loading the view.
+        super.viewDidLoad()
+        
+        isDoneSwitch.isOn = todoList[indexPath.row].isDone!
+        textField.text = todoList[indexPath.row].name
+        datePicker.date = todoList[indexPath.row].addDate!
+    }
+    
+    func loadData() {
+        isDoneSwitch.isOn = todoList[indexPath.row].isDone!
+        textField.text = todoList[indexPath.row].name
+        datePicker.date = todoList[indexPath.row].addDate!
     }
     
 

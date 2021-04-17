@@ -52,13 +52,6 @@ class TableViewController: UITableViewController {
         }
     }
     
-    @IBAction func cellDetailTap(_ sender: NSCoder) {
-        if let detailViewController = storyboard?.instantiateViewController(identifier: "todoDetail") as? ToDoDetailViewController {
-            detailViewController.name = "hello" // 値渡し
-            present(detailViewController, animated: true, completion: nil) // 画面遷移
-        }
-    }
-    
     func saveToDoData(_ data: [ToDo]) {
         //シリアライズ(オブジェクトの内容をバイナリに変換)
         //カスタムクラス(MyData)はそのままUserDefaultsで保存できないためシリアライズしてData型に変換する
@@ -118,13 +111,13 @@ class TableViewController: UITableViewController {
     
     //セルを選択された際のアクション
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        let cell = tableView.cellForRow(at:indexPath) as? ToDoTableViewCell
-        // チェックマークを入れる
-        guard let isDone = self.todoList[indexPath.row].isDone else { return }
-        cell?.accessoryType = isDone ? UITableViewCell.AccessoryType.none : UITableViewCell.AccessoryType.checkmark
-        self.todoList[indexPath.row].isDone = isDone ? false : true
-        self.saveToDoData(self.todoList)
+        if let detailViewController = storyboard?.instantiateViewController(identifier: "todoDetail") as? ToDoDetailViewController {
+            detailViewController.todoList = self.todoList
+            detailViewController.indexPath = indexPath// 値渡し
+            //detailViewController.loadData()
+            present(detailViewController, animated: true, completion: nil) // 画面遷移
+        }
+
     }
     
     // セルのスワイプアクションを設定
@@ -135,6 +128,15 @@ class TableViewController: UITableViewController {
             self.saveToDoData(self.todoList)
             self.tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.automatic)
         }
+        // ToDoの完了
+        let doneToDoAction = UIContextualAction(style: UIContextualAction.Style.normal, title: "Done") { (action, view, completionHandler) in
+            let cell = tableView.cellForRow(at:indexPath) as? ToDoTableViewCell
+            guard let isDone = self.todoList[indexPath.row].isDone else { return }
+            cell?.accessoryType = isDone ? UITableViewCell.AccessoryType.none : UITableViewCell.AccessoryType.checkmark
+            self.todoList[indexPath.row].isDone = isDone ? false : true
+            self.saveToDoData(self.todoList)
+        }
+        doneToDoAction.backgroundColor = UIColor.systemBlue
         // セルの編集
         let editAction = UIContextualAction(style: UIContextualAction.Style.normal, title: "Edit") { (action, view, completionHandler) in
             let alertController = UIAlertController(title: "ToDo編集", message: "名前を変更しますか？\n\(self.todoList[indexPath.row].name!)", preferredStyle: UIAlertController.Style.alert)
@@ -155,7 +157,7 @@ class TableViewController: UITableViewController {
             
             self.present(alertController, animated: true, completion: nil)
         }
-        return UISwipeActionsConfiguration(actions: [deleteAction, editAction])
+        return UISwipeActionsConfiguration(actions: [deleteAction, editAction, doneToDoAction])
     }
     
     // セルの入れ替え挙動設定
@@ -174,5 +176,18 @@ class TableViewController: UITableViewController {
     //tableViewのタイトルを設定
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return "ToDo"
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        print("hello")
+        // 遷移先のViewControllerを取得
+        let next = segue.destination as? ToDoDetailViewController
+        // 遷移先のプロパティに処理ごと渡す
+        next?.resultHandler = { todoList in
+            // 引数を使ってoutputLabelの値を更新する処理
+            self.todoList = todoList
+            self.saveToDoData(self.todoList)
+            self.tableView.reloadData()
+        }
     }
 }

@@ -14,6 +14,7 @@ class ToDo: NSObject, NSSecureCoding {
     var name: String?
     var addDate: Date?
     var isDone: Bool?
+    var memo: String?
     
     init (name: String, addDate: Date, isDone: Bool) {
         self.name = name
